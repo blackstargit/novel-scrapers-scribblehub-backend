@@ -1,0 +1,24 @@
+services:
+  flaresolverr:
+    image: ghcr.io/flaresolverr/flaresolverr:latest
+    container_name: flaresolverr
+    restart: unless-stopped
+    environment:
+      - LOG_LEVEL=info
+
+  scribblehub-scraper:
+    build: .
+    container_name: scribblehub-scraper
+    restart: unless-stopped
+    depends_on:
+      - flaresolverr
+    environment:
+      - FLARESOLVERR_URL=http://flaresolverr:8191
+    ports:
+      - "8600:8600"
+    volumes:
+      # Mount the configuration secrets so they aren't embedded in the built image
+      - ./.env:/app/.env
+
+      # Mount the data folder directly to the host OS so EPUBs are safe even if the container stops
+      - ./data:/app/data

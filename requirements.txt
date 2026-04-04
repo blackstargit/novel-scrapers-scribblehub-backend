@@ -1,0 +1,12 @@
+requests
+beautifulsoup4
+curl-cffi
+ebooklib
+markdown
+fastapi
+uvicorn[standard]
+pydantic
+python-dotenv
+python-multipart
+lxml
+cloudscraper
