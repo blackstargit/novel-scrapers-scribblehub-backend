@@ -4,7 +4,6 @@ QuickNovel-compatible .epub file.
 
 Chapter files must be named chapter<N>.md (e.g. chapter1.md, chapter42.md).
 """
-
 import logging
 import re
 from pathlib import Path
@@ -14,7 +13,6 @@ import requests
 from ebooklib import epub
 
 logger = logging.getLogger(__name__)
-
 
 def _download_cover(cover_url: str, dest: Path) -> bool:
     """Download a cover image to *dest*. Returns True on success."""
@@ -31,7 +29,6 @@ def _download_cover(cover_url: str, dest: Path) -> bool:
     except Exception as exc:
         logger.warning("Could not download cover image: %s", exc)
         return False
-
 
 def build_epub(
     input_dir: Path,
@@ -142,9 +139,7 @@ def build_epub(
     epub.write_epub(output_file, book)
     logger.info("EPUB build complete — %d chapters.", len(epub_chapters))
 
-
 # ── CLI (standalone usage) ────────────────────────────────────────────────────
-
 if __name__ == "__main__":
     import argparse
 

@@ -20,13 +20,10 @@ from app.config import get_settings
 
 logger = logging.getLogger(__name__)
 
-
 def _flaresolverr_url() -> str:
     return get_settings().flaresolverr_url
 
-
 # ── Low-level fetchers ─────────────────────────────────────────────────────────
-
 def fetch_via_flaresolverr(
     url: str,
     method: str = "GET",
@@ -69,7 +66,6 @@ def fetch_via_flaresolverr(
 
     raise RuntimeError(f"FlareSolverr failed to fetch {url} after {retries} attempts.")
 
-
 def fetch_direct(url: str, retries: int = 3) -> str:
     """Direct GET request — fast, no Cloudflare bypass. Raises RuntimeError on failure."""
     session = requests.Session()
@@ -101,9 +97,7 @@ def fetch_direct(url: str, retries: int = 3) -> str:
                 time.sleep(3 * attempt)
     raise RuntimeError(f"Direct fetch failed for {url} after {retries} attempts.")
 
-
 # ── Parsers ───────────────────────────────────────────────────────────────────
-
 def parse_series_metadata(html: str) -> dict:
     """Parse the series main page to extract metadata."""
     soup = BeautifulSoup(html, "lxml")
@@ -150,7 +144,6 @@ def parse_series_metadata(html: str) -> dict:
         "total_chapters": total_chapters,
     }
 
-
 def parse_chapter_list_from_html(html: str) -> list:
     """
     Extract chapter list from the static series page HTML.
@@ -174,7 +167,6 @@ def parse_chapter_list_from_html(html: str) -> list:
     for idx, ch in enumerate(chapters, 1):
         ch["number"] = idx
     return chapters
-
 
 def fetch_chapter_list(post_id: str, total_chapters: int) -> list:
     """Fetch the full chapter list via the WordPress AJAX endpoint (via FlareSolverr)."""
@@ -219,7 +211,6 @@ def fetch_chapter_list(post_id: str, total_chapters: int) -> list:
         ch["number"] = idx
     return chapters
 
-
 def parse_chapter_content(html: str) -> tuple[str, str]:
     """Parse chapter title and body text from a chapter page."""
     soup = BeautifulSoup(html, "lxml")
@@ -238,9 +229,7 @@ def parse_chapter_content(html: str) -> tuple[str, str]:
     ]
     return title, "\n\n".join(paragraphs)
 
-
 # ── Main entrypoint ───────────────────────────────────────────────────────────
-
 def scrape(
     url: str,
     output_dir: Path,
@@ -352,9 +341,7 @@ def scrape(
     log(total, total, "Scraping complete.")
     return metadata
 
-
 # ── CLI (standalone usage) ────────────────────────────────────────────────────
-
 if __name__ == "__main__":
     import argparse
 

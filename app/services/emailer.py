@@ -4,7 +4,6 @@ Gmail SMTP email sender.
 Sends a finished EPUB file as an attachment to the given recipient address.
 Credentials are read from the app Settings (which loads from .env).
 """
-
 import logging
 import smtplib
 import time
@@ -14,9 +13,7 @@ from pathlib import Path
 from app.config import get_settings
 
 logger = logging.getLogger(__name__)
-
 _MAX_ATTACHMENT_MB = 24  # Gmail hard limit is 25 MB; keep a 1 MB margin
-
 
 def send_epub_to_email(
     epub_path: Path,
@@ -80,5 +77,4 @@ def send_epub_to_email(
             logger.warning("Email attempt %d/%d failed: %s", attempt, retries, exc)
             if attempt < retries:
                 time.sleep(5 * attempt)
-
     return False

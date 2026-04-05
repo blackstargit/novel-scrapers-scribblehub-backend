@@ -4,12 +4,10 @@ Keeping these separate from routing logic ensures easy reuse and testing.
 """
 
 from typing import Literal, Optional
-
 from pydantic import BaseModel, HttpUrl, field_validator
 
 
 # ── Request Models ─────────────────────────────────────────────────────────────
-
 class ScrapeRequest(BaseModel):
     """Body for POST /api/scrape"""
     url: str
@@ -29,11 +27,8 @@ class ScrapeRequest(BaseModel):
             raise ValueError("Provide a valid email address")
         return v.strip()
 
-
 # ── Response / State Models ────────────────────────────────────────────────────
-
 JobStatus = Literal["queued", "scraping", "converting", "emailing", "done", "error"]
-
 
 class JobState(BaseModel):
     """Full in-memory state dict for a single scrape job."""
@@ -50,7 +45,6 @@ class ScrapeResponse(BaseModel):
     """Returned immediately after POST /api/scrape."""
     job_id: str
     status: JobStatus
-
 
 class StatusResponse(JobState):
     """Returned by GET /api/status/{job_id} — identical to JobState for now."""

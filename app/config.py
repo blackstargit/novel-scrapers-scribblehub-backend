@@ -16,11 +16,6 @@ class Settings(BaseSettings):
     # ── Gmail ──────────────────────────────────────────────────────────────────
     gmail_user: str = ""
     gmail_app_password: str = ""
-
-    # ── Security / CORS ────────────────────────────────────────────────────────
-    allowed_hosts: str = "*"
-    allowed_origins: str = "*"
-
     # ── FlareSolverr ──────────────────────────────────────────────────────────
     flaresolverr_url: str = "http://localhost:8191"
 
@@ -33,15 +28,6 @@ class Settings(BaseSettings):
         case_sensitive=False,
         extra="ignore",
     )
-
-    @property
-    def allowed_hosts_list(self) -> list[str]:
-        return [h.strip() for h in self.allowed_hosts.split(",") if h.strip()]
-
-    @property
-    def allowed_origins_list(self) -> list[str]:
-        return [o.strip() for o in self.allowed_origins.split(",") if o.strip()]
-
 
 @lru_cache(maxsize=1)
 def get_settings() -> Settings:

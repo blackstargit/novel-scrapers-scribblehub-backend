@@ -6,7 +6,6 @@ existing background task instead of launching a duplicate.
 """
 
 import re
-
 from fastapi import APIRouter, BackgroundTasks, HTTPException
 
 from app.config import get_settings
@@ -17,9 +16,7 @@ from app.state import get_job, set_job, update_job
 router = APIRouter(prefix="/api", tags=["scrape"])
 settings = get_settings()
 
-
 # ── Background pipeline ────────────────────────────────────────────────────────
-
 def _run_pipeline(job_id: str, url: str, email: str) -> None:
     """
     Full scrape → EPUB → email pipeline.
@@ -86,9 +83,7 @@ def _run_pipeline(job_id: str, url: str, email: str) -> None:
     except Exception as exc:
         update_job(job_id, status="error", message=f"Email error: {exc}")
 
-
 # ── Route ──────────────────────────────────────────────────────────────────────
-
 @router.post("/scrape", response_model=ScrapeResponse, status_code=202)
 def start_scrape(req: ScrapeRequest, bg: BackgroundTasks) -> ScrapeResponse:
     """
