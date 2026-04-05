@@ -5,12 +5,9 @@ Uses pydantic-settings for type-safe, auto-documented config.
 
 from functools import lru_cache
 from pathlib import Path
-
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
-
 BASE_DIR = Path(__file__).resolve().parent.parent  # backend/
-
 
 class Settings(BaseSettings):
     # ── Gmail ──────────────────────────────────────────────────────────────────
