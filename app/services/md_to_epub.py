@@ -68,7 +68,9 @@ def build_epub(
     # ── Cover image ────────────────────────────────────────────────────────────
     if metadata.get("cover_url"):
         cover_url: str = metadata["cover_url"]
-        ext = cover_url.split("?")[0].rsplit(".", 1)[-1].lower() or "jpg"
+        ext = cover_url.split("?")[0].rsplit(".", 1)[-1].lower()
+        if ext not in ("jpg", "jpeg", "png", "webp", "gif"):
+            ext = "jpg"
         cover_path = input_dir / f"cover.{ext}"
         if not cover_path.exists():
             _download_cover(cover_url, cover_path)
