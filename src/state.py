@@ -9,7 +9,7 @@ it trivial to swap the store for SQLite/Redis later.
 import threading
 from typing import Dict, Optional
 
-from app.models import JobState
+from src.models import JobState
 
 
 # The single source of truth for all running/completed jobs (keyed by Post ID)

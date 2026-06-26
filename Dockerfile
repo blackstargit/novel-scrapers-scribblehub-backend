@@ -21,5 +21,5 @@ COPY . .
 # Expose the API port
 EXPOSE 8600
 
-# Start Uvicorn — entry point is now app/main.py (package style)
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8600"]
+# Start Uvicorn — entry point is src/main.py
+CMD ["uvicorn", "src.main:app", "--host", "0.0.0.0", "--port", "8600"]

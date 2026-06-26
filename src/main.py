@@ -1,22 +1,23 @@
 """
 FastAPI application factory.
 
-Entry point:  uvicorn app.main:app --reload --port 8600
+Entry point:  python src/main.py
+         or:  uvicorn src.main:app --reload --port 8600
 """
 
-from imp import reload
 import logging
+import os
+import sys
+import uvicorn
+from dotenv import load_dotenv
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.middleware.trustedhost import TrustedHostMiddleware
 
-from app.config import get_settings
-from app.routers import scrape, status
-
-import os
-from dotenv import load_dotenv
+from src.config import get_settings
+from src.routers import scrape, status
 
 load_dotenv()
 
@@ -37,14 +38,12 @@ ALLOWED_ORIGINS = [o.strip() for o in os.getenv("ALLOWED_ORIGINS", "*").split(",
 @asynccontextmanager
 async def lifespan(application: FastAPI):
     """Run setup tasks before the server starts accepting requests."""
-    # Ensure the data directory exists
     settings.data_dir.mkdir(parents=True, exist_ok=True)
     logger.info("Data directory: %s", settings.data_dir)
     logger.info("FlareSolverr:   %s", settings.flaresolverr_url)
     logger.info("Allowed hosts:  %s", ALLOWED_HOSTS)
     logger.info("Allowed origins:%s", ALLOWED_ORIGINS)
     yield
-    # (shutdown logic here if ever needed)
 
 
 # ── App factory ───────────────────────────────────────────────────────────────
@@ -53,12 +52,9 @@ def create_app() -> FastAPI:
         title="ScribbleHub Novel Downloader",
         description="Scrape → EPUB → Gmail automation API",
         version="2.0.0",
-        reload=True,
-        port=8602,
         lifespan=lifespan,
     )
 
-    # ── Security middleware ────────────────────────────────────────────────────
     application.add_middleware(
         TrustedHostMiddleware,
         allowed_hosts=ALLOWED_HOSTS,
@@ -72,10 +68,14 @@ def create_app() -> FastAPI:
         allow_headers=["*"],
     )
 
-    # ── API routers ────────────────────────────────────────────────────────────
     application.include_router(scrape.router)
     application.include_router(status.router)
 
     return application
 
 app = create_app()
+
+if __name__ == "__main__":
+    # Add backend/ to sys.path so absolute `src.*` imports resolve
+    sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+    uvicorn.run("src.main:app", host="0.0.0.0", port=8600, reload=True)

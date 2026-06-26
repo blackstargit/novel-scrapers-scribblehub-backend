@@ -10,7 +10,7 @@ import time
 from email.message import EmailMessage
 from pathlib import Path
 
-from app.config import get_settings
+from src.config import get_settings
 
 logger = logging.getLogger(__name__)
 _MAX_ATTACHMENT_MB = 24  # Gmail hard limit is 25 MB; keep a 1 MB margin

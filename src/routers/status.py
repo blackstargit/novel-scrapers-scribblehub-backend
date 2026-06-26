@@ -4,8 +4,8 @@ GET /api/jobs             — List all known jobs (most recent first).
 """
 from fastapi import APIRouter, HTTPException
 
-from app.models import StatusResponse
-from app.state import all_jobs, get_job
+from src.models import StatusResponse
+from src.state import all_jobs, get_job
 
 router = APIRouter(prefix="/api", tags=["status"])
 

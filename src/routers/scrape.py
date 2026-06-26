@@ -8,10 +8,10 @@ existing background task instead of launching a duplicate.
 import re
 from fastapi import APIRouter, BackgroundTasks, HTTPException
 
-from app.config import get_settings
-from app.models import JobState, ScrapeRequest, ScrapeResponse
-from app.services import emailer, md_to_epub, scraper
-from app.state import get_job, set_job, update_job
+from src.config import get_settings
+from src.models import JobState, ScrapeRequest, ScrapeResponse
+from src.services import emailer, md_to_epub, scraper
+from src.state import get_job, set_job, update_job
 
 router = APIRouter(prefix="/api", tags=["scrape"])
 settings = get_settings()

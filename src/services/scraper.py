@@ -16,7 +16,7 @@ from typing import Callable, Optional
 import requests
 from bs4 import BeautifulSoup
 
-from app.config import get_settings
+from src.config import get_settings
 
 logger = logging.getLogger(__name__)
 
